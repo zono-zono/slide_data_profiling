@@ -1,0 +1,3310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データ品質向上のためのデータプロファイリング</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .subtitle {
+            color: #4a5568;
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .icon-grid {
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 400px;
+            height: 400px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            opacity: 0.15;
+            transform: rotate(-10deg);
+            z-index: 0;
+        }
+        .icon-grid i {
+            font-size: 4rem;
+            color: #3b82f6;
+            margin: auto;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 200px;
+            height: 8px;
+            margin: 20px auto 30px auto;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col justify-center items-center p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        <div class="icon-grid">
+            <i class="fas fa-chart-line"></i>
+            <i class="fas fa-database"></i>
+            <i class="fas fa-code"></i>
+            <i class="fas fa-chart-pie"></i>
+            <i class="fas fa-table"></i>
+            <i class="fas fa-search"></i>
+            <i class="fas fa-chart-bar"></i>
+            <i class="fas fa-file-code"></i>
+            <i class="fas fa-check-circle"></i>
+        </div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper text-center">
+            <div class="mb-6">
+                <i class="fas fa-chart-bar text-5xl text-blue-600"></i>
+                <i class="fas fa-arrow-right text-4xl text-blue-500 mx-2"></i>
+                <i class="fas fa-check-circle text-5xl text-green-600"></i>
+            </div>
+            
+            <h1 class="title text-6xl mb-4">データ品質向上のための<br>データプロファイリング</h1>
+            
+            <div class="accent-box"></div>
+            
+            <h2 class="subtitle text-3xl mb-8">Pythonによる14種類の実装例</h2>
+            
+            <div class="flex items-center justify-center space-x-8 mt-12">
+                <div class="flex items-center text-blue-700">
+                    <i class="fas fa-python text-4xl mr-3"></i>
+                    <span class="text-xl">Python</span>
+                </div>
+                <div class="flex items-center text-blue-700">
+                    <i class="fas fa-database text-4xl mr-3"></i>
+                    <span class="text-xl">データ品質</span>
+                </div>
+                <div class="flex items-center text-blue-700">
+                    <i class="fas fa-chart-line text-4xl mr-3"></i>
+                    <span class="text-xl">可視化</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自己紹介 - 現在の活動</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .profile-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+        .tech-badge {
+            background-color: #EBF5FF;
+            color: #3B82F6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 4px;
+            display: inline-block;
+        }
+        .event-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">自己紹介</h1>
+            <div class="accent-box"></div>
+            
+            <div class="grid grid-cols-12 gap-6 mt-4">
+                <!-- Left side: Profile and Current Work -->
+                <div class="col-span-4">
+                    <div class="profile-card p-6">
+                        <div class="flex flex-col items-center">
+                            <img src="https://d1l8kv4srnu6v2.cloudfront.net/users/profile_images/000/071/215/square/open-uri20210616-6-dkohl?f=webp" alt="プロフィール写真" class="profile-image mb-4">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">松本 興樹</h2>
+                            <p class="text-blue-600 font-semibold mb-4">データエンジニア</p>
+                            <div class="text-center text-gray-600">
+                                <p class="mb-2">株式会社みんなの銀行</p>
+                                <p class="text-sm">データ戦略部</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-card p-6 mt-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-briefcase text-blue-600 mr-2"></i>
+                            現在の業務領域
+                        </h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>データパイプラインの構築・運用</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>ネットワークや権限の設計・運用</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>その他諸々</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Right side: Favorite Tech and Events, and new hobbies/community grid -->
+                <div class="col-span-8">
+                    <div class="grid grid-cols-2 gap-6 mb-6">
+                        <!-- Favorite Technologies -->
+                        <div class="profile-card p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-heart text-red-500 mr-2"></i>
+                                好きな技術
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-gray-600 mb-2">データエンジニアリング</h4>
+                                    <div class="flex flex-wrap">
+                                        <span class="tech-badge">BigQuery</span>
+                                        <span class="tech-badge">Dataflow</span>
+                                        <span class="tech-badge">Dataform</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-gray-600 mb-2">クラウド</h4>
+                                    <div class="flex flex-wrap">
+                                        <span class="tech-badge">AWS</span>
+                                        <span class="tech-badge">Terraform</span>
+                                        <span class="tech-badge">Kubernetes</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-gray-600 mb-2">データ分析</h4>
+                                    <div class="flex flex-wrap">
+                                        <span class="tech-badge">Python</span>
+                                        <span class="tech-badge">Pandas</span>
+                                        <span class="tech-badge">Jupyter</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Community Activities -->
+                        <div class="profile-card p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-users text-blue-600 mr-2"></i>
+                                コミュニティ活動
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="event-card p-4">
+                                    <h4 class="font-semibold text-gray-800 mb-2">福岡データエンジニアリング勉強会</h4>
+                                    <p class="text-sm text-gray-600 mb-2">データエンジニアのための勉強会</p>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="fas fa-calendar-alt mr-2"></i>
+                                        <span>2ヶ月に1回くらい開催</span>
+                                    </div>
+                                </div>
+                                <div class="event-card p-4">
+                                    <h4 class="font-semibold text-gray-800 mb-2">Python Data Science Conference</h4>
+                                    <p class="text-sm text-gray-600 mb-2">年2回開催のPythonデータサイエンスカンファレンス</p>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="fas fa-calendar-alt mr-2"></i>
+                                        <span>春・秋開催</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Hobbies and Community: equal width, side by side -->
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="profile-card p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-running text-blue-600 mr-2"></i>
+                                趣味・好きなこと
+                            </h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h4 class="font-semibold text-gray-800 mb-2">運動</h4>
+                                    <p class="text-sm text-gray-600">週末のテニスやジョギングを楽しんでいます</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <h4 class="font-semibold text-gray-800 mb-2">旅行・グルメ</h4>
+                                    <p class="text-sm text-gray-600">国内外の旅行やワイン巡りが好きです</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-card p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-users text-blue-600 mr-2"></i>
+                                コミュニティ活動
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="event-card p-4">
+                                    <h4 class="font-semibold text-gray-800 mb-2">福岡データエンジニアリング勉強会</h4>
+                                    <p class="text-sm text-gray-600 mb-2">データエンジニアのための勉強会</p>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="fas fa-calendar-alt mr-2"></i>
+                                        <span>2ヶ月に1回くらい開催</span>
+                                    </div>
+                                </div>
+                                <div class="event-card p-4">
+                                    <h4 class="font-semibold text-gray-800 mb-2">Python Data Science Conference</h4>
+                                    <p class="text-sm text-gray-600 mb-2">年2回開催のPythonデータサイエンスカンファレンス</p>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="fas fa-calendar-alt mr-2"></i>
+                                        <span>春・秋開催</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom section -->
+            <div class="mt-6 flex justify-between items-end">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-quote-left text-blue-500 mr-2"></i>
+                    <span>データの品質は、ビジネスの品質を決める</span>
+                </div>
+                
+                <div class="flex text-sm text-gray-600">
+                    <i class="fas fa-hashtag text-blue-500 mr-2"></i>
+                    <span>#DataEngineering #Python #DataQuality</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+<div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">おすすめ書籍の紹介</h1>
+            <div class="accent-box"></div>
+
+            <div class="grid grid-cols-12 gap-6 mt-6 items-center">
+                <!-- Book Image -->
+                <div class="col-span-4">
+                    <img src="https://cdn-bookplus.nikkei.com/atcl/catalog/24/12/05/01754/B_9784296205196.jpg?__scale=w:707,h:1000&_sh=0540270610" alt="データ品質プロジェクト実践ガイド" class="rounded-lg shadow-md w-full">
+                </div>
+
+                <!-- Book Details -->
+                <div class="col-span-8">
+                    <div class="card p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-3">『データ品質プロジェクト実践ガイド』</h2>
+                        <p class="text-gray-700 mb-4">
+                            著者：Danette McGilvray<br>
+                            翻訳：吉川 隆一、三宅 康之<br>
+                            出版社：日経BP
+                        </p>
+                        <p class="text-gray-700 mb-4">
+                            データ品質のプロジェクトを「信頼できる情報を得るための10ステップ」に整理した実践的ガイド。<br>
+                            ビジネスと技術の両面からの視点で書かれており、データ品質の全体像とプロジェクトの進め方がわかる。
+                        </p>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                現場での実践に基づいたフレームワーク
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                データ品質の14軸の評価指標に対応
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                プロジェクトマネジメントの観点もカバー
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-8 text-sm text-gray-600 text-right">
+                <i class="fas fa-book text-blue-500 mr-2"></i>
+                <span>出典：データ品質プロジェクト実践ガイド</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 本日のアジェンダ Slide -->
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">本日のアジェンダ</h1>
+            <div class="accent-box"></div>
+
+            <div class="card p-8 mt-6">
+                <ol class="list-decimal list-inside text-xl text-gray-800 space-y-4">
+                    <li>10ステッププロセス</li>
+                    <li>品質評価の14タスク</li>
+                    <li>17のプロファイリング項目</li>
+                </ol>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-8 flex justify-end items-center text-sm text-gray-600">
+                <i class="fas fa-clock text-blue-500 mr-2"></i>
+                <span>約30分の予定</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- データ品質って何？ 新スライド -->
+<div class="slide flex flex-col p-10">
+    <!-- Background elements -->
+    <div class="data-grid"></div>
+
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <h1 class="title text-4xl mb-2">データ品質って何？</h1>
+        <div class="accent-box"></div>
+
+        <div class="grid grid-cols-2 gap-6 mt-6">
+            <!-- Left Column: What is Data Quality -->
+            <div class="card p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-question-circle text-blue-600 mr-2"></i>
+                    データ品質とは？
+                </h2>
+                <p class="text-gray-700 mb-4">データが<strong>ビジネスに有用な形で活用できる状態</strong>かどうかを表す指標。</p>
+                <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        正確で信頼できるデータ
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        欠損や不整合がない
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        必要なときに使える
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        意図通りに意味が通じる
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Right Column: Common Challenges -->
+            <div class="card p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                    難しさ・よくある悩み
+                </h2>
+                <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                        <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                        そもそも「データ品質」が何を指すのか曖昧
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                        どの項目から見てよいか分からない
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                        改善のゴールが見えづらい
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                        関係者間で認識がバラバラ
+                    </li>
+                </ul>
+                <div class="mt-4 p-3 bg-yellow-100 border-l-4 border-yellow-400 rounded text-sm text-gray-700">
+                    まずは<span class="font-bold text-yellow-700">「整合性」「欠損」「型」「一意性」</span>など、基本項目から着手するのがおすすめ。
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</div>
+
+<!-- 画像データプロファイリングの新スライド -->
+<div class="slide flex flex-col p-10">
+    <!-- Background elements -->
+    <div class="data-grid"></div>
+
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <h1 class="title text-4xl mb-2">実装例：画像データのプロファイリング</h1>
+        <div class="accent-box"></div>
+
+        <div class="grid grid-cols-12 gap-6 mt-4">
+            <!-- Left side: Explanation and code -->
+            <div class="col-span-7">
+                <div class="bg-white rounded-lg shadow-lg p-5 h-full">
+                    <h2 class="text-xl font-bold text-blue-600 mb-3 flex items-center">
+                        <i class="fas fa-image mr-2"></i>
+                        画像データプロファイリングの重要性
+                    </h2>
+
+                    <div class="info-badge p-3 mb-4 rounded-md">
+                        <p class="text-sm text-gray-700">画像データの<span class="font-bold text-blue-600">メタデータ</span>や<span class="font-bold text-blue-600">画質</span>、<span class="font-bold text-blue-600">解像度</span>、<span class="font-bold text-blue-600">色空間</span>を確認することで、データの一貫性や利用可能性を評価します。</p>
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2 mt-4">Python実装</h3>
+                    <div class="code-block p-4 overflow-auto" style="max-height: 240px;">
+                        <pre class="text-sm"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image
+<span class="keyword">import</span> os
+
+<span class="keyword">def</span> <span class="function">profile_image_folder</span>(folder_path):
+    resolutions = []
+    file_sizes = []
+    modes = []
+
+    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(folder_path):
+        <span class="keyword">if</span> filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+            img_path = os.path.join(folder_path, filename)
+            img = Image.open(img_path)
+            resolutions.append(img.size)
+            file_sizes.append(os.path.getsize(img_path) / 1024)  <span class="comment"># KB</span>
+            modes.append(img.mode)
+
+    <span class="keyword">return</span> resolutions, file_sizes, modes
+
+resolutions, file_sizes, modes = profile_image_folder(<span class="string">'/path/to/images'</span>)
+
+<span class="function">print</span>(<span class="string">"Resolutions:"</span>, resolutions)
+<span class="function">print</span>(<span class="string">"File Sizes (KB):"</span>, file_sizes)
+<span class="function">print</span>(<span class="string">"Color Modes:"</span>, modes)</pre>
+                    </div>
+
+                    <div class="key-point p-3 mt-4 rounded-md">
+                        <h4 class="text-sm font-bold text-yellow-600 mb-1">実装のポイント</h4>
+                        <ul class="text-xs list-disc list-inside text-gray-700">
+                            <li>画像解像度の分布を確認</li>
+                            <li>ファイルサイズのばらつきを確認</li>
+                            <li>色空間（RGB, Grayscale など）の整合性を確認</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right side: Visualization -->
+            <div class="col-span-5">
+                <div class="bg-white rounded-lg shadow-lg p-5 h-full flex flex-col">
+                    <h2 class="text-xl font-bold text-blue-600 mb-3 flex items-center">
+                        <i class="fas fa-chart-bar mr-2"></i>
+                        画像データプロファイリングの可視化
+                    </h2>
+
+                    <div class="chart-container p-2 mb-3">
+                        <canvas id="imageResolutionBarChart"></canvas>
+                    </div>
+
+                    <div class="chart-container p-2 mt-3" style="height: 200px;">
+                        <canvas id="imageModePieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom section -->
+        <div class="mt-6 flex justify-between items-end">
+            <div class="flex items-center text-sm text-gray-600">
+                <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                <span>画像の解像度や色空間のバラつきはデータの一貫性に影響します</span>
+            </div>
+
+            <div class="flex text-sm text-gray-600">
+                <i class="fas fa-arrow-right text-blue-500 mr-2"></i>
+                <span>次のスライド：他のファイルタイプのプロファイリング</span>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
+
+<div class="slide flex flex-col p-10">
+    <!-- Background elements -->
+    <div class="data-grid"></div>
+
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <h1 class="title text-4xl mb-2">データプロファイリング = データ品質アセスメント</h1>
+        <div class="accent-box"></div>
+
+        <div class="grid grid-cols-2 gap-6 mt-6">
+            <div class="card p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-search text-blue-600 mr-2"></i>
+                    データプロファイリングとは
+                </h2>
+                <p class="text-gray-700 mb-4">データの構造・内容・パターンを把握し、品質を客観的に把握するための分析行為である</p>
+                <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                        <i class="fas fa-dot-circle text-green-500 mt-1 mr-2"></i>
+                        欠損・型・分布などの状態を確認
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-dot-circle text-green-500 mt-1 mr-2"></i>
+                        異常値やルール逸脱を検出
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-dot-circle text-green-500 mt-1 mr-2"></i>
+                        改善すべき箇所を特定
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-tasks text-indigo-600 mr-2"></i>
+                    データ品質アセスメントとしての位置づけ
+                </h2>
+                <p class="text-gray-700 mb-4">プロファイリングは品質評価の起点であり、アセスメントの第一歩といえる</p>
+                <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                        現状把握 → 評価 → 改善へつなげる
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                        継続的な品質維持の基盤
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                        可視化によって関係者間で共通認識を得る
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 flex justify-end items-center text-sm text-gray-600">
+            <i class="fas fa-hashtag text-blue-500 mr-2"></i>
+            <span>#DataProfiling #QualityAssessment</span>
+        </div>
+    </div>
+</div>
+
+<div class="slide flex flex-col p-10">
+    <!-- Background elements -->
+    <div class="data-grid"></div>
+
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <h1 class="title text-4xl mb-2">全体のまとめ</h1>
+        <div class="accent-box"></div>
+
+        <div class="grid grid-cols-12 gap-6 mt-6">
+            <!-- Left Column: Overview -->
+            <div class="col-span-6">
+                <div class="card p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-bullseye text-blue-600 mr-2"></i>
+                        本発表の要点
+                    </h2>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>10ステッププロセス</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>品質評価の14タスク</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>17のプロファイリング項目</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Column: Action Steps -->
+            <div class="col-span-6">
+                <div class="card p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-tools text-indigo-600 mr-2"></i>
+                        次のステップ
+                    </h2>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-circle-right text-blue-500 mt-1 mr-2"></i>
+                            <span>ビジネスインパクトの評価との往復</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-circle-right text-blue-500 mt-1 mr-2"></i>
+                            <span>非構造化データに対してのプロファイリング</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 flex justify-between items-center text-sm text-gray-600">
+            <div class="flex items-center">
+                <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                <span>品質改善は継続的な取り組みです</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-hashtag text-blue-500 mr-2"></i>
+                <span>#DataQuality #Profiling #Python</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>福岡データエンジニアリング勉強会への参加</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            background-color: #EBF5FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px auto;
+        }
+        .countdown-box {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .topic-badge {
+            background-color: #EBF5FF;
+            color: #3B82F6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">福岡データエンジニアリング勉強会への参加</h1>
+            <div class="accent-box"></div>
+
+            <div class="grid grid-cols-12 gap-6 mt-4">
+                <!-- Left side: Event Info -->
+                <div class="col-span-5">
+                    <div class="card p-6">
+                        <div class="icon-circle">
+                            <i class="fas fa-users text-3xl text-blue-600"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">福岡データエンジニアリング勉強会</h2>
+                        <div class="w-full mb-4">
+                            <img src="https://media.connpass.com/thumbs/1c/fc/1cfc05a18943334ce00e677853ca2c60.png" alt="福岡データエンジニアリング勉強会" class="rounded-lg shadow-md w-full">
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar text-blue-600 mr-3"></i>
+                                <span class="text-gray-700">2024年4月開催予定</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-blue-600 mr-3"></i>
+                                <span class="text-gray-700">福岡市中央区天神</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock text-blue-600 mr-3"></i>
+                                <span class="text-gray-700">19:00 - 21:00</span>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3">期待されるトピック</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="topic-badge">データパイプライン</span>
+                                <span class="topic-badge">ETL/ELT</span>
+                                <span class="topic-badge">データ品質</span>
+                                <span class="topic-badge">クラウド</span>
+                                <span class="topic-badge">データウェアハウス</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right side: 参加方法 -->
+                <div class="col-span-7 flex flex-col justify-between">
+                    <div class="card p-6 mt-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-sign-in-alt text-blue-600 mr-2"></i>
+                            参加方法
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            connpassでイベント情報を周知しています。以下のQRコードからアクセスしてください。
+                        </p>
+                        <div class="flex justify-center">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://fukuoka-data-engineering.connpass.com/" alt="参加QRコード" class="rounded border p-2">
+                        </div>
+                    </div>
+                    <div class="card p-6 mt-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">参加の目的</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>福岡のデータエンジニアリングコミュニティとの交流</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>最新の技術動向のキャッチアップ</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>実践的な知見の共有と学習</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom section -->
+            <div class="mt-6 flex justify-between items-end">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-hashtag text-blue-500 mr-2"></i>
+                    <span>#FukuokaDataEngineering #DataPipeline #DataQuality</span>
+                </div>
+                <div class="flex text-sm text-gray-600">
+                    <i class="fas fa-calendar-check text-blue-500 mr-2"></i>
+                    <span>次回の勉強会まであと30日</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">終わりに</h1>
+            <div class="accent-box"></div>
+
+            <div class="grid grid-cols-12 gap-6 mt-6">
+                <!-- Summary -->
+                <div class="col-span-6">
+                    <div class="card p-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-clipboard-list text-blue-600 mr-2"></i>
+                            発表のまとめ
+                        </h2>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>データ品質はビジネスの品質に直結する</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>まずは基本的整合性から始めるのが効果的</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>継続的なプロファイリングと改善が鍵</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Next Action -->
+                <div class="col-span-6">
+                    <div class="card p-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-forward text-indigo-600 mr-2"></i>
+                            次のアクション
+                        </h2>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-arrow-circle-right text-blue-500 mt-1 mr-2"></i>
+                                <span>小さなテーブルからプロファイリングを実践</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-arrow-circle-right text-blue-500 mt-1 mr-2"></i>
+                                <span>チームで評価結果を共有して改善へ</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-arrow-circle-right text-blue-500 mt-1 mr-2"></i>
+                                <span>改善サイクルを継続して回す仕組みづくり</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-8 flex justify-between items-center text-sm text-gray-600">
+                <div class="flex items-center">
+                    <i class="fas fa-user-circle text-blue-500 mr-2"></i>
+                    <span>発表者: 松本 興樹</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-comment-dots text-blue-500 mr-2"></i>
+                    <span>ご清聴ありがとうございました。ご質問はお気軽に！</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自己紹介</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .profile-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+        .skill-badge {
+            background-color: #EBF5FF;
+            color: #3B82F6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 4px;
+            display: inline-block;
+        }
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            background-color: #EBF5FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px auto;
+        }
+    </style>
+</head>
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データ品質改善の10ステッププロセス</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.6.0/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .subtitle {
+            color: #4a5568;
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .process-image {
+            max-width: 90%;
+            height: auto;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .note-box {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 10px 15px;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">データ品質改善の10ステッププロセス</h1>
+            <div class="accent-box"></div>
+            
+            <div class="flex flex-col items-center justify-center mt-4">
+                <div class="w-full mb-5">
+                    <img src="https://assets.st-note.com/img/1745755320-hMxBRl7YwAF1ib0DHJqEgQId.png" alt="データ品質改善の10ステップ" class="process-image">
+                </div>
+                
+                <div class="w-full mt-6">
+                    <div class="note-box">
+                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb text-blue-600 text-xl mr-3"></i>
+                            <p class="text-md font-semibold">ポイント：現場では<span class="text-blue-600 font-bold">「1→3→4→5→6→10」</span>と短くサイクルを回すことも一般的です</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-5 right-5 text-sm text-gray-500">
+            <p>出典：データ品質プロジェクト実践ガイド（一部改変）</p>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データ品質評価の14タスク</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .subtitle {
+            color: #4a5568;
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .task-image {
+            max-width: 90%;
+            height: auto;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .note-box {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 10px 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight {
+            color: #3b82f6;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">データ品質評価の14タスク</h1>
+            <div class="accent-box"></div>
+
+            <div class="flex flex-row items-start justify-center mt-4 space-x-6">
+                <div class="w-full">
+                    <div class="bg-white bg-opacity-80 p-5 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-blue-700 mb-3">多角的なデータ品質評価</h3>
+                        <p class="mb-4">データ品質は単一の視点ではなく、<span class="highlight">14の異なる観点</span>から評価することで、包括的な品質向上が可能になる。</p>
+                        <p class="mb-4 text-sm text-gray-700">
+                            <span class="highlight">データの基本的整合性</span>から着実に確認を進めることで、その他の品質評価軸も信頼性を持って進められる。
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-3 mt-4 text-sm text-gray-700">
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>1. 関連性と信頼の認識</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>2. データ仕様</div>
+                            <div class="flex items-center bg-blue-100 border-l-4 border-blue-400 font-bold px-2"><i class="fas fa-check-circle text-green-600 mr-2"></i>3. データの基本的整合性</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>4. 正確性</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>5. 一意性と重複排除</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>6. 質量と同期性</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>7. 適時性</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>8. アクセス</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>9. セキュリティとプライバシー</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>10. プレゼンテーションの品質</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>11. データの網羅性</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>12. データの劣化</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>13. ユーザビリティと取引可能性</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-600 mr-2"></i>14. その他の関連するデータ品質評価軸</div>
+                        </div>
+                        <!-- 間違いがちなアプローチ: Highlighted box -->
+                        <div class="mt-6 p-4 bg-yellow-100 border-l-4 border-yellow-400 rounded">
+                            <h4 class="text-md font-bold text-yellow-700 mb-2 flex items-center">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>間違いがちなアプローチ
+                            </h4>
+                            <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                <li>重複排除からいきなり始めてしまう</li>
+                                <li>NULL や型不整合を後回しにして進める</li>
+                                <li>キーの一意性のみで「品質が良い」と判断する</li>
+                                <li>可視化せずに改善効果が曖昧になる</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データの基本的整合性</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .warning-box {
+            background-color: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 10px 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight {
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        .step-box {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .icon-circle {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            margin: 0 auto 10px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">データの基本的整合性</h1>
+            <div class="accent-box"></div>
+            
+            <div class="flex flex-row items-start justify-between mt-4 space-x-6">
+                <!-- Left column - Definition and Importance -->
+                <div class="w-1/2">
+                    <div class="card p-6 mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-3">基本的整合性とは</h2>
+                        <div class="flex items-start mb-4">
+                            <div class="step-box">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div>
+                                <p class="text-lg"><span class="highlight">データそのもの</span>が「そもそも正しく成り立っているか」を確認すること</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="step-box">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div>
+                                <p class="text-lg"><span class="highlight">プロファイリング</span>はデータの基本的整合性を評価するテクニック</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-3">なぜ基本的整合性から始めるべきか</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex flex-col items-center">
+                                <div class="icon-circle">
+                                    <i class="fas fa-layer-group text-2xl"></i>
+                                </div>
+                                <p class="text-center font-semibold">他の評価軸の土台となる</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="icon-circle">
+                                    <i class="fas fa-tachometer-alt text-2xl"></i>
+                                </div>
+                                <p class="text-center font-semibold">影響度が大きい</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="icon-circle">
+                                    <i class="fas fa-chart-bar text-2xl"></i>
+                                </div>
+                                <p class="text-center font-semibold">定量把握が容易</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="icon-circle">
+                                    <i class="fas fa-tasks text-2xl"></i>
+                                </div>
+                                <p class="text-center font-semibold">計画策定の現実性向上</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right column - Warning and Profiling Items -->
+                <div class="w-1/2">
+                    <div class="warning-box mb-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-triangle text-yellow-500 text-xl mr-3 mt-1"></i>
+                            <div>
+                                <p class="text-lg font-semibold mb-1">間違いがちなアプローチ</p>
+                                <p class="mb-2">多くの人は<span class="font-bold">重複排除から始めがち</span>ですが、これには危険性があります:</p>
+                                <ul class="list-disc pl-5">
+                                    <li class="mb-1">キーがNULLだらけの可能性を見逃す</li>
+                                    <li class="mb-1">型が文字列と数値で混在する問題を隠す</li>
+                                    <li class="mb-1">「ユニーク」でも欠損や不整合があれば価値が低い</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-3">プロファイリング項目の例</h2>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-list-ol text-blue-600 mr-2"></i>
+                                <span>レコード数</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-percentage text-blue-600 mr-2"></i>
+                                <span>NULL値の割合</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-code text-blue-600 mr-2"></i>
+                                <span>データ型の整合性</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-fingerprint text-blue-600 mr-2"></i>
+                                <span>一意な値の分布</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-chart-pie text-blue-600 mr-2"></i>
+                                <span>値の分布</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-ruler text-blue-600 mr-2"></i>
+                                <span>値の範囲</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-text-width text-blue-600 mr-2"></i>
+                                <span>文字列の長さ</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar-check text-blue-600 mr-2"></i>
+                                <span>日付の有効性</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データ品質プロセスのフローチャート</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .flowchart-container {
+            position: relative;
+            margin: 0 auto;
+            width: 90%;
+        }
+        .step-highlight {
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            background-color: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+        .note-box {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 10px 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        .cycle-arrow {
+            position: absolute;
+            bottom: 30px;
+            right: 50px;
+            width: 200px;
+            height: 50px;
+            border: 3px solid #3b82f6;
+            border-right: none;
+            border-radius: 50px 0 0 50px;
+        }
+        .cycle-arrow:after {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: 10px;
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 15px solid #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">データ品質改善サイクル</h1>
+            <div class="accent-box"></div>
+            
+            <div class="flowchart-container mt-4">
+                <div class="card p-6 mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">10ステッププロセスの流れ</h2>
+                    
+                    <!-- The main flowchart image -->
+                    <div class="flex justify-center my-4">
+                        <img src="https://assets.st-note.com/img/1745755320-hMxBRl7YwAF1ib0DHJqEgQId.png" alt="データ品質改善サイクルの10ステップ" class="max-w-full h-auto shadow-lg rounded-lg" style="max-height: 380px;">
+                    </div>
+                    
+                    <!-- Key points about the flowchart -->
+                    <div class="grid grid-cols-2 gap-6 mt-6">
+                        <div class="note-box">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-blue-500 text-xl mr-3 mt-1"></i>
+                                <div>
+                                    <p class="font-semibold mb-1">主要サイクルパターン</p>
+                                    <p>現場では「<span class="font-bold text-blue-600">1→3→4→5→6→10</span>」の短いサイクルを回すことも可能</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="note-box">
+                            <div class="flex items-start">
+                                <i class="fas fa-sync-alt text-blue-500 text-xl mr-3 mt-1"></i>
+                                <div>
+                                    <p class="font-semibold mb-1">反復的・継続的プロセス</p>
+                                    <p>データ品質の改善は継続的な活動であり、状況に応じてステップを行き来</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Focus point highlight -->
+                    <div class="flex justify-center mt-4">
+                        <div class="step-highlight p-3 inline-flex items-center">
+                            <i class="fas fa-search-plus text-blue-600 text-xl mr-3"></i>
+                            <p class="text-lg font-semibold">特に <span class="text-blue-600">「Step3：データ品質の評価」</span> と <span class="text-blue-600">「Step4：ビジネス影響の評価」</span> が密接に関連</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom note -->
+            <div class="mt-2 text-right text-sm text-gray-600">
+                <p>出典：データ品質プロジェクト実践ガイド（一部改変）</p>
+            </div>
+            
+            <!-- Cyclical process visualization -->
+            <div class="cycle-arrow"></div>
+            <div class="absolute bottom-10 right-64 text-blue-600 font-semibold">
+                継続的改善サイクル
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データプロファイリングのPython実装</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .item-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .python-badge {
+            background-color: #3776AB;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: 500;
+        }
+        .libraries-section {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .code-preview {
+            background-color: #282a36;
+            color: #f8f8f2;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">データプロファイリングのPython実装</h1>
+            <div class="accent-box"></div>
+            
+            <div class="grid grid-cols-12 gap-4 mt-6">
+                <!-- Full-width: 14 items grid -->
+                <div class="col-span-12">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-tasks text-blue-600 mr-2"></i>
+                        17項目のデータプロファイリング
+                    </h2>
+                    <div class="grid grid-cols-4 gap-3">
+                        <!-- Item 1 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">1. レコード数</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">データセットの総レコード数と期待値との差異</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-table text-blue-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 2 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">2. 完全性／充足率</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">必須フィールドの値が満たされている割合</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-clipboard-check text-green-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 3 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">3. NULL</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">各カラムのNULL値の割合と分布</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-ban text-red-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 4 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">4. 内容適合性</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">ビジネスルールに適合する値の割合</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 5 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">5. 有効性</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">複数の検証ルールに適合する値の割合</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-shield-alt text-purple-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 6 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">6. 一意な値</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">各カラムの一意な値の割合</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-fingerprint text-indigo-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 7 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">7. 度数分布</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">データ値の分布と偏りの可視化</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-chart-bar text-blue-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 8 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">8. データ鮮度</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">データの更新時期と経過期間</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-calendar-alt text-orange-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 9 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">9. パターン/フォーマット</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">規定のフォーマットに適合する値の割合</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-puzzle-piece text-yellow-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 10 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">10. 値の範囲</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">有効範囲内に収まる値の割合</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-ruler-combined text-red-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 11 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">11. 精度・粒度</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">必要な精度を満たす値の割合</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-search-plus text-green-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 12 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">12. データ型</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">期待されるデータ型との一致度</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-code-branch text-purple-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 13 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">13. サイズ／長さ</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">適切な長さを満たす値の割合</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-text-width text-blue-500"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 14 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">14. 参照整合性</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">参照テーブルと整合する値の割合</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-link text-teal-500"></i>
+                            </div>
+                        </div>
+
+                        <!-- Item 15 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">15. 一貫性と同期性</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">システム間の値の一致率やバージョン差分を評価</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-sync-alt text-indigo-500"></i>
+                            </div>
+                        </div>
+
+                        <!-- Item 16 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">16. 一意性 & 重複排除</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">主キー重複や類似レコードの特定と除去</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-clone text-pink-500"></i>
+                            </div>
+                        </div>
+
+                        <!-- Item 17 -->
+                        <div class="item-card p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-700">17. ビジネスルール適合</span>
+                                <span class="python-badge">Python</span>
+                            </div>
+                            <p class="text-xs text-gray-600">クロスカラム依存や業務コード適合性の確認</p>
+                            <div class="mt-2 flex justify-end">
+                                <i class="fas fa-briefcase text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom note -->
+            <div class="flex justify-between items-center mt-6">
+                <div class="bg-blue-50 rounded-lg p-3 flex items-center">
+                    <i class="fas fa-info-circle text-blue-500 text-xl mr-3"></i>
+                    <p class="text-sm text-gray-700">次のスライドから各項目の<span class="font-bold">Python実装</span>と<span class="font-bold">可視化方法</span>について詳しく解説します</p>
+                </div>
+                
+                <div class="text-right text-sm text-gray-600">
+                    <p>今回の実装はNew York Cityタクシーデータを例に説明します</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データプロファイリング実装例1：レコード数</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .code-block {
+            background-color: #282a36;
+            color: #f8f8f2;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 260px;
+        }
+        .info-badge {
+            background-color: #EBF5FF;
+            border-left: 4px solid #3B82F6;
+        }
+        .key-point {
+            background-color: #FFFBEB;
+            border-left: 4px solid #F59E0B;
+        }
+        .comment { color: #6272a4; }
+        .keyword { color: #ff79c6; }
+        .function { color: #50fa7b; }
+        .string { color: #f1fa8c; }
+        .number { color: #bd93f9; }
+        .variable { color: #8be9fd; }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">実装例1：レコード数の確認と可視化</h1>
+            <div class="accent-box"></div>
+            
+            <div class="grid grid-cols-12 gap-6 mt-4">
+                <!-- Left side: Explanation and code -->
+                <div class="col-span-7">
+                    <div class="bg-white rounded-lg shadow-lg p-5 h-full">
+                        <h2 class="text-xl font-bold text-blue-600 mb-3 flex items-center">
+                            <i class="fas fa-table mr-2"></i>
+                            レコード数検証の重要性
+                        </h2>
+                        
+                        <div class="info-badge p-3 mb-4 rounded-md">
+                            <p class="text-sm text-gray-700">データセットの<span class="font-bold text-blue-600">総レコード数</span>を確認し、期待値との<span class="font-bold text-blue-600">差異</span>を検出します。このチェックにより、データの欠落や重複を早期に発見できます。</p>
+                        </div>
+                        
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2 mt-4">Python実装</h3>
+                        <div class="code-block p-4 overflow-auto" style="max-height: 240px;">
+                            <pre class="text-sm"><span class="keyword">def</span> <span class="function">check_record_count</span>(df, expected_count=<span class="keyword">None</span>):
+    actual_count = <span class="function">len</span>(df)
+    diff_rate = <span class="keyword">None</span>
+    <span class="keyword">if</span> expected_count <span class="keyword">is not None</span>:
+        diff_rate = <span class="function">abs</span>(actual_count - expected_count) / expected_count
+    <span class="keyword">return</span> actual_count, diff_rate
+
+<span class="comment"># 関数の使用例</span>
+record_count, diff_rate = check_record_count(df, expected_count=<span class="number">10000</span>)
+<span class="function">print</span>(<span class="string">"Record count:"</span>, record_count, <span class="string">"Difference rate:"</span>, diff_rate)
+
+<span class="comment"># レコード数の比較を可視化</span>
+plt.figure(figsize=(<span class="number">10</span>, <span class="number">5</span>))
+plt.bar([<span class="string">'Actual'</span>, <span class="string">'Expected'</span>], [record_count, <span class="number">10000</span>])
+plt.title(<span class="string">'Record Count Comparison'</span>)
+plt.ylabel(<span class="string">'Number of Records'</span>)
+plt.show()</pre>
+                        </div>
+                        
+                        <div class="key-point p-3 mt-4 rounded-md">
+                            <h4 class="text-sm font-bold text-yellow-600 mb-1">実装のポイント</h4>
+                            <ul class="text-xs list-disc list-inside text-gray-700">
+                                <li>期待値との差を割合（%）で評価</li>
+                                <li>期待値が未設定の場合も対応可能</li>
+                                <li>可視化によりデータ量の差を直感的に把握</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right side: Visualization -->
+                <div class="col-span-5">
+                    <div class="bg-white rounded-lg shadow-lg p-5 h-full flex flex-col">
+                        <h2 class="text-xl font-bold text-blue-600 mb-3 flex items-center">
+                            <i class="fas fa-chart-bar mr-2"></i>
+                            可視化例
+                        </h2>
+                        
+                        <div class="chart-container p-2 flex-grow">
+                            <canvas id="recordCountChart"></canvas>
+                        </div>
+                        
+                        <div class="mt-4 grid grid-cols-2 gap-3">
+                            <div class="bg-blue-50 p-3 rounded-md">
+                                <h4 class="text-sm font-bold text-blue-600 mb-1">用途</h4>
+                                <ul class="text-xs list-disc list-inside text-gray-700">
+                                    <li>データ欠落の早期発見</li>
+                                    <li>データ重複のチェック</li>
+                                    <li>ETL処理の検証</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-green-50 p-3 rounded-md">
+                                <h4 class="text-sm font-bold text-green-600 mb-1">関連項目</h4>
+                                <ul class="text-xs list-disc list-inside text-gray-700">
+                                    <li>2. 完全性／充足率</li>
+                                    <li>6. 一意な値（重複確認）</li>
+                                    <li>3. NULL値チェック</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom section -->
+            <div class="mt-6 flex justify-between items-end">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                    <span>レコード数は最も基本的かつ重要なプロファイリング指標です</span>
+                </div>
+                
+                <div class="flex text-sm text-gray-600">
+                    <i class="fas fa-arrow-right text-blue-500 mr-2"></i>
+                    <span>次のスライド：2. 完全性／充足率の実装</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create a chart for record count visualization
+        const ctx = document.getElementById('recordCountChart').getContext('2d');
+        const recordCountChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['実際のレコード数', '期待されるレコード数'],
+                datasets: [{
+                    label: 'レコード数',
+                    data: [9850, 10000],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 159, 64, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'レコード数比較'
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.raw + ' レコード';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'レコード数'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データプロファイリング実装例2：完全性／充足率</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .code-block {
+            background-color: #282a36;
+            color: #f8f8f2;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 260px;
+        }
+        .info-badge {
+            background-color: #EBF5FF;
+            border-left: 4px solid #3B82F6;
+        }
+        .key-point {
+            background-color: #FFFBEB;
+            border-left: 4px solid #F59E0B;
+        }
+        .comment { color: #6272a4; }
+        .keyword { color: #ff79c6; }
+        .function { color: #50fa7b; }
+        .string { color: #f1fa8c; }
+        .number { color: #bd93f9; }
+        .variable { color: #8be9fd; }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">実装例2：完全性／充足率の確認と可視化</h1>
+            <div class="accent-box"></div>
+            
+            <div class="grid grid-cols-12 gap-6 mt-4">
+                <!-- Left side: Explanation and code -->
+                <div class="col-span-7">
+                    <div class="bg-white rounded-lg shadow-lg p-5 h-full">
+                        <h2 class="text-xl font-bold text-blue-600 mb-3 flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            完全性／充足率の重要性
+                        </h2>
+                        
+                        <div class="info-badge p-3 mb-4 rounded-md">
+                            <p class="text-sm text-gray-700"><span class="font-bold text-blue-600">必須フィールド</span>のデータが正しく入力されているかを評価します。データの<span class="font-bold text-blue-600">欠損状況</span>を把握し、分析や意思決定の信頼性を確保するための基本指標です。</p>
+                        </div>
+                        
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2 mt-4">Python実装</h3>
+                        <div class="code-block p-4 overflow-auto" style="max-height: 240px;">
+                            <pre class="text-sm"><span class="keyword">def</span> <span class="function">check_completeness</span>(df, required_fields=<span class="keyword">None</span>):
+    <span class="keyword">if</span> required_fields <span class="keyword">is None</span>:
+        required_fields = df.columns
+    
+    <span class="comment"># 必須フィールドのNULL値をチェック</span>
+    null_counts = df[required_fields].isnull().sum(axis=<span class="number">1</span>)
+    complete_records = (null_counts == <span class="number">0</span>).sum()
+    completeness_ratio = complete_records / <span class="function">len</span>(df)
+    
+    <span class="comment"># カラムごとのNULL値の割合</span>
+    column_null_ratios = df[required_fields].isnull().mean()
+    
+    <span class="keyword">return</span> complete_records, completeness_ratio, column_null_ratios
+
+<span class="comment"># 必須フィールドを指定して完全性をチェック</span>
+required_fields = [<span class="string">'vendor_id'</span>, <span class="string">'pickup_datetime'</span>, <span class="string">'dropoff_datetime'</span>, 
+                  <span class="string">'passenger_count'</span>, <span class="string">'trip_distance'</span>, <span class="string">'fare_amount'</span>]
+complete_records, completeness_ratio, column_null_ratios = check_completeness(df, required_fields)
+
+<span class="comment"># 結果の可視化</span>
+plt.figure(figsize=(<span class="number">12</span>, <span class="number">6</span>))
+plt.subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>)
+plt.bar([<span class="string">'Complete'</span>, <span class="string">'Incomplete'</span>], 
+        [complete_records, <span class="function">len</span>(df) - complete_records])</pre>
+                        </div>
+                        
+                        <div class="key-point p-3 mt-4 rounded-md">
+                            <h4 class="text-sm font-bold text-yellow-600 mb-1">実装のポイント</h4>
+                            <ul class="text-xs list-disc list-inside text-gray-700">
+                                <li>必須フィールドを明示的に指定可能</li>
+                                <li>レコード単位とフィールド単位の2つの視点から評価</li>
+                                <li>ヒートマップでNULL値の分布パターンを視覚化</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right side: Visualization -->
+                <div class="col-span-5">
+                    <div class="bg-white rounded-lg shadow-lg p-5 h-full flex flex-col">
+                        <h2 class="text-xl font-bold text-blue-600 mb-3 flex items-center">
+                            <i class="fas fa-chart-pie mr-2"></i>
+                            可視化例
+                        </h2>
+                        
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div class="chart-container p-2" style="height: 130px;">
+                                <canvas id="completenessChart"></canvas>
+                            </div>
+                            <div class="chart-container p-2" style="height: 130px;">
+                                <canvas id="nullRatioChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container p-2 flex-grow">
+                            <canvas id="heatmapVisualization"></canvas>
+                        </div>
+                        
+                        <div class="mt-4 grid grid-cols-2 gap-3">
+                            <div class="bg-blue-50 p-3 rounded-md">
+                                <h4 class="text-sm font-bold text-blue-600 mb-1">活用シーン</h4>
+                                <ul class="text-xs list-disc list-inside text-gray-700">
+                                    <li>データクレンジング優先順位付け</li>
+                                    <li>ETLプロセスの検証</li>
+                                    <li>データ品質SLAの測定</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-green-50 p-3 rounded-md">
+                                <h4 class="text-sm font-bold text-green-600 mb-1">関連項目</h4>
+                                <ul class="text-xs list-disc list-inside text-gray-700">
+                                    <li>3. NULL値チェック</li>
+                                    <li>4. 内容適合性</li>
+                                    <li>7. 度数分布</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom section -->
+            <div class="mt-6 flex justify-between items-end">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                    <span>完全性の低いデータは分析結果の信頼性を著しく損なう可能性があります</span>
+                </div>
+                
+                <div class="flex text-sm text-gray-600">
+                    <i class="fas fa-arrow-right text-blue-500 mr-2"></i>
+                    <span>次のスライド：3. NULL値チェックの実装</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create completeness ratio chart
+        const ctx1 = document.getElementById('completenessChart').getContext('2d');
+        const completenessChart = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['完全なレコード', '不完全なレコード'],
+                datasets: [{
+                    data: [85, 15],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(255, 99, 132, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'レコード完全性',
+                        font: {
+                            size: 12
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Create null ratio by field chart
+        const ctx2 = document.getElementById('nullRatioChart').getContext('2d');
+        const nullRatioChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['ID', '日付', '金額', '数量'],
+                datasets: [{
+                    label: 'NULL率',
+                    data: [2, 10, 8, 15],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'フィールド別NULL率 (%)',
+                        font: {
+                            size: 12
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 20,
+                        ticks: {
+                            font: {
+                                size: 9
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 9
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Create null heatmap visualization
+        const ctx3 = document.getElementById('heatmapVisualization').getContext('2d');
+        
+        // Simulating heatmap data with a simple chart
+        const nullHeatmap = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: ['vendor_id', 'pickup_datetime', 'dropoff_datetime', 'passenger_count', 'trip_distance', 'fare_amount'],
+                datasets: [{
+                    label: 'NULL値の分布状況',
+                    data: [2, 10, 8, 15, 5, 7],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(255, 159, 64, 0.7)',
+                        'rgba(255, 205, 86, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(153, 102, 255, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 205, 86, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'フィールド別NULL値の分布',
+                        font: {
+                            size: 12
+                        }
+                    },
+                    subtitle: {
+                        display: true,
+                        text: '(フィールド別の欠損率)',
+                        font: {
+                            size: 10,
+                            style: 'italic'
+                        },
+                        padding: {
+                            bottom: 10
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'NULL率 (%)',
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データプロファイリング実装例3：NULL値チェック</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .code-block {
+            background-color: #282a36;
+            color: #f8f8f2;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 260px;
+        }
+        .info-badge {
+            background-color: #EBF5FF;
+            border-left: 4px solid #3B82F6;
+        }
+        .key-point {
+            background-color: #FFFBEB;
+            border-left: 4px solid #F59E0B;
+        }
+        .warning-badge {
+            background-color: #FEF2F2;
+            border-left: 4px solid #EF4444;
+        }
+        .comment { color: #6272a4; }
+        .keyword { color: #ff79c6; }
+        .function { color: #50fa7b; }
+        .string { color: #f1fa8c; }
+        .number { color: #bd93f9; }
+        .variable { color: #8be9fd; }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">実装例3：NULL値チェックの解説</h1>
+            <div class="accent-box"></div>
+            
+            <div class="grid grid-cols-12 gap-6 mt-4">
+                <!-- Left side: Explanation and code -->
+                <div class="col-span-7">
+                    <div class="bg-white rounded-lg shadow-lg p-5 h-full">
+                        <h2 class="text-xl font-bold text-blue-600 mb-3 flex items-center">
+                            <i class="fas fa-search mr-2"></i>
+                            NULL値検出の重要性
+                        </h2>
+                        
+                        <div class="info-badge p-3 mb-4 rounded-md">
+                            <p class="text-sm text-gray-700">NULL値はデータの<span class="font-bold text-blue-600">欠損</span>を表し、分析結果に<span class="font-bold text-blue-600">偏り</span>をもたらす可能性があります。NULL値の分布を把握することで、データの品質向上のための<span class="font-bold text-blue-600">優先順位付け</span>が可能になります。</p>
+                        </div>
+                        
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2 mt-4">Python実装</h3>
+                        <div class="code-block p-4 overflow-auto" style="max-height: 240px;">
+                            <pre class="text-sm"><span class="keyword">def</span> <span class="function">check_null_values</span>(df):
+    <span class="comment"># NULL値の数を集計</span>
+    null_counts = df.isnull().sum()
+    <span class="comment"># NULL値の割合を計算</span>
+    null_ratios = df.isnull().mean()
+    
+    null_stats = pd.DataFrame({
+        <span class="string">'null_count'</span>: null_counts,
+        <span class="string">'null_ratio'</span>: null_ratios
+    })
+    
+    <span class="keyword">return</span> null_stats
+
+null_stats = check_null_values(df)
+<span class="function">print</span>(<span class="string">"NULL Statistics:\n"</span>, null_stats)
+
+<span class="comment"># NULL値の分布を可視化</span>
+plt.figure(figsize=(<span class="number">12</span>, <span class="number">6</span>))
+sns.heatmap(df.isnull(), yticklabels=<span class="keyword">False</span>, cbar=<span class="keyword">True</span>, cmap=<span class="string">'viridis'</span>)
+plt.title(<span class="string">'NULL Values Distribution'</span>)
+
+<span class="comment"># 各カラムのNULL値の割合を棒グラフで表示</span>
+plt.figure(figsize=(<span class="number">10</span>, <span class="number">5</span>))
+sns.barplot(x=null_stats[<span class="string">'null_ratio'</span>], y=null_stats.index)
+plt.title(<span class="string">"NULL Ratio per Column"</span>)</pre>
+                        </div>
+                        
+                        <div class="warning-badge p-3 mt-4 rounded-md">
+                            <h4 class="text-sm font-bold text-red-600 mb-1">NULL値への対処法</h4>
+                            <ul class="text-xs list-disc list-inside text-gray-700">
+                                <li>削除：欠損が少ない場合、レコードまたは列を削除</li>
+                                <li>補完：平均値・中央値・最頻値などで埋める</li>
+                                <li>モデリング：回帰モデルなどで予測値を算出</li>
+                                <li>特殊値：NULL専用の特殊値（-1など）で置換</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right side: Visualization -->
+                <div class="col-span-5">
+                    <div class="bg-white rounded-lg shadow-lg p-5 h-full flex flex-col">
+                        <h2 class="text-xl font-bold text-blue-600 mb-3 flex items-center">
+                            <i class="fas fa-chart-bar mr-2"></i>
+                            NULL値の可視化
+                        </h2>
+                        
+                        <div class="chart-container p-2 mb-3" style="height: 200px;">
+                            <canvas id="nullRatioBarChart"></canvas>
+                        </div>
+                        
+                        <div class="chart-container p-2 flex-grow">
+                            <canvas id="nullHeatmapSimulation"></canvas>
+                        </div>
+                        
+                        <div class="key-point p-3 mt-4 rounded-md">
+                            <h4 class="text-sm font-bold text-yellow-600 mb-1">可視化のポイント</h4>
+                            <ul class="text-xs list-disc list-inside text-gray-700">
+                                <li>ヒートマップ：NULL値の分布パターンを直感的に確認できる</li>
+                                <li>棒グラフ：カラムごとのNULL率を定量的に比較できる</li>
+                                <li>相関分析：複数カラムでのNULLの関連性を発見できる</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-4 grid grid-cols-2 gap-3">
+                            <div class="bg-blue-50 p-3 rounded-md">
+                                <h4 class="text-sm font-bold text-blue-600 mb-1">活用シーン</h4>
+                                <ul class="text-xs list-disc list-inside text-gray-700">
+                                    <li>データクレンジングの優先順位付け</li>
+                                    <li>データ収集プロセスの問題特定</li>
+                                    <li>分析前のデータ品質評価</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-green-50 p-3 rounded-md">
+                                <h4 class="text-sm font-bold text-green-600 mb-1">関連項目</h4>
+                                <ul class="text-xs list-disc list-inside text-gray-700">
+                                    <li>2. 完全性／充足率</li>
+                                    <li>4. 内容適合性</li>
+                                    <li>7. 度数分布</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom section -->
+            <div class="mt-6 flex justify-between items-end">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                    <span>NULL値の多いカラムは、分析から除外するか、補完方法を慎重に検討しましょう</span>
+                </div>
+                
+                <div class="flex text-sm text-gray-600">
+                    <i class="fas fa-arrow-right text-blue-500 mr-2"></i>
+                    <span>次のスライド：4. 内容適合性の実装</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create NULL ratio bar chart
+        const ctxBar = document.getElementById('nullRatioBarChart').getContext('2d');
+        const nullRatioBarChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['vendor_id', 'pickup_datetime', 'dropoff_datetime', 'passenger_count', 'trip_distance', 'fare_amount'],
+                datasets: [{
+                    label: 'NULL率 (%)',
+                    data: [1.2, 5.8, 8.3, 12.5, 3.7, 2.1],
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'カラム別NULL値の割合',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'NULL率 (%)',
+                            font: {
+                                size: 12
+                            }
+                        },
+                        max: 15
+                    }
+                }
+            }
+        });
+        
+        // Create heatmap simulation with color blocks
+        const ctxHeat = document.getElementById('nullHeatmapSimulation').getContext('2d');
+        
+        // Draw a heatmap-like visualization
+        // Since Chart.js doesn't have a native heatmap, we'll simulate it with a custom chart
+        
+        function drawHeatmapSimulation(ctx, width, height) {
+            const cols = 20;
+            const rows = 10;
+            const cellWidth = width / cols;
+            const cellHeight = height / rows;
+            
+            // Random NULL pattern data (for visualization)
+            const nullPattern = [];
+            for (let i = 0; i < rows; i++) {
+                const row = [];
+                for (let j = 0; j < cols; j++) {
+                    // Higher NULL probability for certain columns
+                    const isNull = Math.random() < (j % 6 === 3 ? 0.4 : j % 6 === 1 ? 0.2 : 0.05);
+                    row.push(isNull);
+                }
+                nullPattern.push(row);
+            }
+            
+            // Draw cells
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    const x = j * cellWidth;
+                    const y = i * cellHeight;
+                    
+                    ctx.fillStyle = nullPattern[i][j] ? 
+                        'rgba(255, 99, 132, 0.8)' : 
+                        'rgba(75, 192, 192, 0.2)';
+                        
+                    ctx.fillRect(x, y, cellWidth - 1, cellHeight - 1);
+                }
+            }
+            
+            // Add legend
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.fillText('NULL値ヒートマップのサンプル表示', 10, height - 30);
+            
+            // Legend boxes
+            ctx.fillStyle = 'rgba(255, 99, 132, 0.8)';
+            ctx.fillRect(10, height - 20, 15, 15);
+            ctx.fillStyle = 'rgba(75, 192, 192, 0.2)';
+            ctx.fillRect(110, height - 20, 15, 15);
+            
+            // Legend text
+            ctx.fillStyle = '#333';
+            ctx.fillText('NULL値', 30, height - 10);
+            ctx.fillText('データあり', 130, height - 10);
+        }
+        
+        // Wait for the DOM to be fully loaded
+        window.addEventListener('load', function() {
+            const canvas = document.getElementById('nullHeatmapSimulation');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas dimensions
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            // Draw the heatmap
+            drawHeatmapSimulation(ctx, canvas.width, canvas.height);
+        });
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データプロファイリング実装例4：内容適合性</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .title {
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .data-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .accent-box {
+            background-color: #3b82f6;
+            width: 120px;
+            height: 5px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+        }
+        .code-block {
+            background-color: #282a36;
+            color: #f8f8f2;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 260px;
+        }
+        .info-badge {
+            background-color: #EBF5FF;
+            border-left: 4px solid #3B82F6;
+        }
+        .key-point {
+            background-color: #FFFBEB;
+            border-left: 4px solid #F59E0B;
+        }
+        .warning-badge {
+            background-color: #FEF2F2;
+            border-left: 4px solid #EF4444;
+        }
+        .comment { color: #6272a4; }
+        .keyword { color: #ff79c6; }
+        .function { color: #50fa7b; }
+        .string { color: #f1fa8c; }
+        .number { color: #bd93f9; }
+        .variable { color: #8be9fd; }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-10">
+        <!-- Background elements -->
+        <div class="data-grid"></div>
+        
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <h1 class="title text-4xl mb-2">実装例4：内容適合性のチェック</h1>
+            <div class="accent-box"></div>
+            
+            <div class="grid grid-cols-12 gap-6 mt-4">
+                <!-- Left side: Explanation and code -->
+                <div class="col-span-7">
+                    <div class="bg-white rounded-lg shadow-lg p-5 h-full">
+                        <h2 class="text-xl font-bold text-blue-600 mb-3 flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            内容適合性の重要性
+                        </h2>
+                        
+                        <div class="info-badge p-3 mb-4 rounded-md">
+                            <p class="text-sm text-gray-700"><span class="font-bold text-blue-600">内容適合性</span>は、データ値がビジネスルールや条件に適合しているかを検証します。例えば、人数は<span class="font-bold text-blue-600">正の値</span>であるべき、料金は<span class="font-bold text-blue-600">0より大きい</span>べきなど、<span class="font-bold text-blue-600">論理的制約</span>に基づく検証です。</p>
+                        </div>
+                        
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2 mt-4">Python実装</h3>
+                        <div class="code-block p-4 overflow-auto" style="max-height: 240px;">
+                            <pre class="text-sm"><span class="keyword">def</span> <span class="function">check_content_suitability</span>(df, rules_dict):
+    <span class="comment"># ルール辞書に基づいてデータの適合性をチェック</span>
+    results = {}
+    <span class="keyword">for</span> column, rule <span class="keyword">in</span> rules_dict.items():
+        <span class="keyword">if</span> column <span class="keyword">in</span> df.columns:
+            <span class="comment"># 各カラムに対してルールを適用し、適合率を計算</span>
+            results[column] = df[column].apply(rule).mean()
+    <span class="keyword">return</span> results
+
+<span class="comment"># ビジネスルールの定義</span>
+rules = {
+    <span class="string">'passenger_count'</span>: <span class="keyword">lambda</span> x: 0 < x,
+    <span class="string">'trip_distance'</span>: <span class="keyword">lambda</span> x: x > 0,
+    <span class="string">'fare_amount'</span>: <span class="keyword">lambda</span> x: x > 0
+}
+suitability_results = check_content_suitability(df, rules)
+<span class="function">print</span>(<span class="string">"Content Suitability Results:"</span>, suitability_results)
+
+<span class="comment"># 内容適合性の結果を可視化</span>
+unsuitable_ratios = {col: 1 - ratio <span class="keyword">for</span> col, ratio <span class="keyword">in</span> suitability_results.items()}
+plt.figure(figsize=(10, 5))
+plt.bar(unsuitable_ratios.keys(), unsuitable_ratios.values())
+plt.title(<span class="string">'Ratio of Records Not Meeting Content Rules'</span>)
+plt.xlabel(<span class="string">'Column'</span>)
+plt.ylabel(<span class="string">'Unsuitable Ratio'</span>)</pre>
+                        </div>
+                        
+                        <div class="key-point p-3 mt-4 rounded-md">
+                            <h4 class="text-sm font-bold text-yellow-600 mb-1">実装のポイント</h4>
+                            <ul class="text-xs list-disc list-inside text-gray-700">
+                                <li>lambda関数でルールを簡潔に表現</li>
+                                <li>複雑なルールは別途関数として定義可能</li>
+                                <li>各ルールの適合率を計算して比較</li>
+                                <li>不適合データは個別に詳細調査が必要</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right side: Visualization -->
+                <div class="col-span-5">
+                    <div class="bg-white rounded-lg shadow-lg p-5 h-full flex flex-col">
+                        <h2 class="text-xl font-bold text-blue-600 mb-3 flex items-center">
+                            <i class="fas fa-chart-bar mr-2"></i>
+                            内容適合性の可視化
+                        </h2>
+                        
+                        <div class="chart-container p-2 mb-3">
+                            <canvas id="suitabilityBarChart"></canvas>
+                        </div>
+                        
+                        <div class="chart-container p-2 mt-3" style="height: 200px;">
+                            <canvas id="complianceRadarChart"></canvas>
+                        </div>
+                        
+                        <div class="mt-4 grid grid-cols-2 gap-3">
+                            <div class="bg-red-50 p-3 rounded-md">
+                                <h4 class="text-sm font-bold text-red-600 mb-1">一般的な問題例</h4>
+                                <ul class="text-xs list-disc list-inside text-gray-700">
+                                    <li>負の値の利用料金</li>
+                                    <li>0人の乗客数</li>
+                                    <li>空の移動距離（0 km）</li>
+                                    <li>不可能な時間値</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-green-50 p-3 rounded-md">
+                                <h4 class="text-sm font-bold text-green-600 mb-1">対処法</h4>
+                                <ul class="text-xs list-disc list-inside text-gray-700">
+                                    <li>ビジネスルールの明確化</li>
+                                    <li>入力フォームのバリデーション強化</li>
+                                    <li>自動補正ルールの設定</li>
+                                    <li>異常値の通知システム構築</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom section -->
+            <div class="mt-6 flex justify-between items-end">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-link text-blue-500 mr-2"></i>
+                    <span>関連項目：9. パターン/フォーマット検証、10. 値の範囲検証、4. 有効性検証</span>
+                </div>
+                
+                <div class="flex text-sm text-gray-600">
+                    <i class="fas fa-arrow-right text-blue-500 mr-2"></i>
+                    <span>次のスライド：5. 有効性の実装</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    
+    <script>
+        // Create suitability bar chart
+        const ctxBar = document.getElementById('suitabilityBarChart').getContext('2d');
+        const suitabilityBarChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['passenger_count', 'trip_distance', 'fare_amount'],
+                datasets: [{
+                    label: '不適合率 (%)',
+                    data: [4.8, 2.3, 7.5],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(255, 159, 64, 0.7)',
+                        'rgba(255, 205, 86, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'ビジネスルール不適合のレコード割合',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '不適合率 (%)',
+                            font: {
+                                size: 12
+                            }
+                        },
+                        max: 10
+                    }
+                }
+            }
+        });
+        
+        // Create compliance radar chart
+        const ctxRadar = document.getElementById('complianceRadarChart').getContext('2d');
+        const complianceRadarChart = new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: [
+                    '乗客数 > 0',
+                    '移動距離 > 0',
+                    '料金 > 0',
+                    '乗客数 ≤ 6',
+                    '移動距離 < 100km',
+                    '料金 < 1000円'
+                ],
+                datasets: [{
+                    label: '適合率',
+                    data: [95.2, 97.7, 92.5, 98.9, 99.3, 99.8],
+                    fill: true,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    pointBackgroundColor: 'rgb(54, 162, 235)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(54, 162, 235)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'ビジネスルールへの適合率 (%)',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 90,
+                        suggestedMax: 100,
+                        ticks: {
+                            stepSize: 2
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    
+</body>
+</html>
+
+
+    <!-- AI-generated closing slide -->
+
